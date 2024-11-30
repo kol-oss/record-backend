@@ -4,8 +4,10 @@ import edu.kpi.backend.dto.CreateCategoryDTO;
 import edu.kpi.backend.entity.Category;
 import edu.kpi.backend.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +42,7 @@ public class CategoryController {
     @PostMapping()
     public ResponseEntity<Category> createCategory(@RequestBody CreateCategoryDTO createCategoryDTO) {
         if (createCategoryDTO.getName() == null || createCategoryDTO.getName().isEmpty()) {
-            return ResponseEntity.badRequest().build();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category name is invalid");
         }
 
         return ResponseEntity.ok(this.categoryService.createCategory(createCategoryDTO));

@@ -5,8 +5,10 @@ import edu.kpi.backend.dto.GetAllRecordsDTO;
 import edu.kpi.backend.entity.Record;
 import edu.kpi.backend.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +47,7 @@ public class RecordController {
             createRecordDTO.getCategoryId() == null ||
             createRecordDTO.getAmount() == 0
         ) {
-            return ResponseEntity.badRequest().build();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Input params are invalid");
         }
 
         Optional<Record> created = this.recordService.createRecord(createRecordDTO);

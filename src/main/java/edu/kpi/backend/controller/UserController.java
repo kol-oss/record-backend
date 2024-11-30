@@ -4,8 +4,10 @@ import edu.kpi.backend.entity.User;
 import edu.kpi.backend.dto.CreateUserDTO;
 import edu.kpi.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +42,7 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<User> createUser(@RequestBody CreateUserDTO createUserDTO) {
         if (createUserDTO.getName() == null || createUserDTO.getName().isEmpty()) {
-            return ResponseEntity.badRequest().build();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User name is invalid");
         }
 
         return ResponseEntity.ok(this.userService.createUser(createUserDTO));
