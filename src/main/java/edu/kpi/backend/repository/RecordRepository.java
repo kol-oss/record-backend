@@ -1,6 +1,7 @@
 package edu.kpi.backend.repository;
 
 import edu.kpi.backend.entity.Record;
+import edu.kpi.backend.utils.FilterUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -13,8 +14,15 @@ public class RecordRepository {
         this.records = new HashSet<>();
     }
 
-    public List<Record> getAll() {
-        return this.records.stream().toList();
+    public List<Record> getAll(UUID userId, UUID categoryId) {
+        return this.records.stream()
+                .filter(
+                        record -> (
+                                FilterUtils.equals(userId, record.getUserId()) &&
+                                FilterUtils.equals(categoryId, record.getCategoryId())
+                        )
+                )
+                .toList();
     }
 
     public Optional<Record> getById(UUID id) {
@@ -24,12 +32,6 @@ public class RecordRepository {
     }
 
     public Record create(UUID userId, UUID categoryId, int amount) {
-        Optional<Record> stored = this.records.stream()
-                .filter(record -> record.getUserId().equals(userId) && record.getCategoryId().equals(categoryId))
-                .findFirst();
-
-        if (stored.isPresent()) return stored.get();
-
         Record record = new Record(UUID.randomUUID(), userId, categoryId, amount);
         this.records.add(record);
 

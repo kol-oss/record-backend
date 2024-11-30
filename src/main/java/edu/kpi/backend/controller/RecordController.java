@@ -1,6 +1,7 @@
 package edu.kpi.backend.controller;
 
 import edu.kpi.backend.dto.CreateRecordDTO;
+import edu.kpi.backend.dto.GetAllRecordsDTO;
 import edu.kpi.backend.entity.Record;
 import edu.kpi.backend.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,9 @@ public class RecordController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Record>> getAllRecords() {
+    public ResponseEntity<List<Record>> getAllRecords(@RequestBody GetAllRecordsDTO getAllRecordsDTO) {
         return ResponseEntity.ok(
-                this.recordService.getAllRecords()
+                this.recordService.getAllRecords(getAllRecordsDTO)
         );
     }
 

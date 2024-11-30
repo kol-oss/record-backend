@@ -1,6 +1,7 @@
 package edu.kpi.backend.service;
 
 import edu.kpi.backend.dto.CreateRecordDTO;
+import edu.kpi.backend.dto.GetAllRecordsDTO;
 import edu.kpi.backend.entity.Record;
 import edu.kpi.backend.repository.CategoryRepository;
 import edu.kpi.backend.repository.RecordRepository;
@@ -25,8 +26,8 @@ public class RecordService {
         this.recordRepository = recordRepository;
     }
 
-    public List<Record> getAllRecords() {
-        return this.recordRepository.getAll();
+    public List<Record> getAllRecords(GetAllRecordsDTO getAllRecordsDTO) {
+        return this.recordRepository.getAll(getAllRecordsDTO.getUserId(), getAllRecordsDTO.getCategoryId());
     }
 
     public Optional<Record> getRecordById(UUID id) {
