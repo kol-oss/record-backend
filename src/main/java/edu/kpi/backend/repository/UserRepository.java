@@ -1,8 +1,10 @@
 package edu.kpi.backend.repository;
 
+import edu.kpi.backend.entity.Account;
 import edu.kpi.backend.entity.User;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Repository
@@ -30,7 +32,7 @@ public class UserRepository {
 
         if (stored.isPresent()) return stored.get();
 
-        User user = new User(UUID.randomUUID(), name);
+        User user = new User(UUID.randomUUID(), name, new Account(UUID.randomUUID(), 0, LocalDate.now()));
         this.users.add(user);
 
         return user;

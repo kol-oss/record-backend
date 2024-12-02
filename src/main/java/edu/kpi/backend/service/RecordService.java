@@ -1,7 +1,10 @@
 package edu.kpi.backend.service;
 
 import edu.kpi.backend.dto.CreateRecordDTO;
+import edu.kpi.backend.entity.Account;
+import edu.kpi.backend.entity.Category;
 import edu.kpi.backend.entity.Record;
+import edu.kpi.backend.entity.User;
 import edu.kpi.backend.repository.CategoryRepository;
 import edu.kpi.backend.repository.RecordRepository;
 import edu.kpi.backend.repository.UserRepository;
@@ -40,11 +43,20 @@ public class RecordService {
     }
 
     public Optional<Record> createRecord(CreateRecordDTO createRecordDTO) {
-        if (
-            this.userRepository.getById(createRecordDTO.getUserId()).isEmpty() ||
-            this.categoryRepository.getById(createRecordDTO.getCategoryId()).isEmpty()
-        ) {
+        Optional<User> user = this.userRepository.getById(createRecordDTO.getUserId());
+        Optional<Category> category = this.categoryRepository.getById(createRecordDTO.getCategoryId());
+
+        if (user.isEmpty() || category.isEmpty()) {
             return Optional.empty();
+        }
+
+        int amount = createRecordDTO.getAmount();
+        Account account = user.get().getAccount();
+
+        if (createRecordDTO.getAmount() > 0) {
+            account.add(amount);
+        } else {
+            account.remove(Math.abs(amount));
         }
 
         return Optional.ofNullable(this.recordRepository.create(
