@@ -11,8 +11,6 @@ public class UserRepository {
 
     public UserRepository() {
         this.users = new HashSet<>();
-
-        this.users.add(new User(UUID.randomUUID(), "Jack"));
     }
 
     public List<User> getAll() {

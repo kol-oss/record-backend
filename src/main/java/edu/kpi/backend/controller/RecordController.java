@@ -1,7 +1,6 @@
 package edu.kpi.backend.controller;
 
 import edu.kpi.backend.dto.CreateRecordDTO;
-import edu.kpi.backend.dto.GetAllRecordsDTO;
 import edu.kpi.backend.entity.Record;
 import edu.kpi.backend.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +24,21 @@ public class RecordController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Record>> getAllRecords(@RequestBody GetAllRecordsDTO getAllRecordsDTO) {
-        return ResponseEntity.ok(
-                this.recordService.getAllRecords(getAllRecordsDTO)
-        );
+    public ResponseEntity<List<Record>> getAllRecords(
+            @RequestParam(required = false, name = "user_id") Optional<UUID> userId,
+            @RequestParam(required = false, name = "category_id") Optional<UUID> categoryId
+    ) {
+        if (userId.isEmpty() && categoryId.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id or category id is required");
+        }
+
+        Optional<List<Record>> filtered = this.recordService.getAllRecords(userId.orElse(null), categoryId.orElse(null));
+
+        if (filtered.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Input user id or category id is invalid");
+        }
+
+        return ResponseEntity.ok(filtered.get());
     }
 
     @GetMapping("{record_id}")

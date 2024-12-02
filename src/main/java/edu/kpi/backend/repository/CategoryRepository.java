@@ -11,8 +11,6 @@ public class CategoryRepository {
 
     public CategoryRepository() {
         this.categories = new HashSet<>();
-
-        this.categories.add(new Category(UUID.randomUUID(), "Sport"));
     }
 
     public List<Category> getAll() {
