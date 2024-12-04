@@ -29,7 +29,7 @@ public class RecordController {
             @RequestParam(required = false, name = "category_id") Optional<UUID> categoryId
     ) {
         if (userId.isEmpty() && categoryId.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id or category id is required");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id or category id param is required");
         }
 
         Optional<List<Record>> filtered = this.recordService.getAllRecords(userId.orElse(null), categoryId.orElse(null));
@@ -62,9 +62,11 @@ public class RecordController {
 
         Optional<Record> created = this.recordService.createRecord(createRecordDTO);
 
-        return created
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.badRequest().build());
+        if (created.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User id or category id is invalid");
+        }
+
+        return ResponseEntity.ok(created.get());
     }
 
     @DeleteMapping("{record_id}")
