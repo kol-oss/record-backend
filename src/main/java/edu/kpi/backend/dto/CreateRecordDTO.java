@@ -1,11 +1,11 @@
 package edu.kpi.backend.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
 import java.util.UUID;
 
-@Getter
+@Data
 @AllArgsConstructor
 public class CreateRecordDTO {
     private UUID userId;

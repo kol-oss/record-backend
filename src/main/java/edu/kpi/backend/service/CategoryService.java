@@ -20,18 +20,24 @@ public class CategoryService {
     }
 
     public List<Category> getAllCategories() {
-        return this.categoryRepository.getAll();
+        return this.categoryRepository.findAll();
     }
 
     public Optional<Category> getCategoryById(UUID id) {
-        return this.categoryRepository.getById(id);
+        return this.categoryRepository.findById(id);
     }
 
     public Category createCategory(CreateCategoryDTO createCategoryDTO) {
-        return this.categoryRepository.create(createCategoryDTO.getName());
+        Category category = new Category(createCategoryDTO.getName());
+
+        return this.categoryRepository.save(category);
     }
 
     public Optional<Category> deleteCategoryById(UUID id) {
-        return this.categoryRepository.deleteById(id);
+        Optional<Category> category = this.categoryRepository.findById(id);
+
+        this.categoryRepository.deleteById(id);
+
+        return category;
     }
 }

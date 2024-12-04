@@ -1,17 +1,36 @@
 package edu.kpi.backend.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Getter
+@NoArgsConstructor
 @AllArgsConstructor
+@Data
+@Entity
+@Table(name = "records")
 public class Record {
-    private final UUID id;
-    private final UUID userId;
-    private final UUID categoryId;
-    private final LocalDate createdAt = LocalDate.now();
-    private final int amount;
+    @Id
+    @GeneratedValue
+    private UUID id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
+    @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
+    private LocalDate createdAt;
+
+    @Column(nullable = false)
+    private int amount;
 }

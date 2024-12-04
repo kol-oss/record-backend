@@ -8,7 +8,9 @@ import edu.kpi.backend.entity.User;
 import edu.kpi.backend.repository.CategoryRepository;
 import edu.kpi.backend.repository.RecordRepository;
 import edu.kpi.backend.repository.UserRepository;
+import edu.kpi.backend.service.specifications.RecordSpecificationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,22 +31,26 @@ public class RecordService {
     }
 
     public Optional<List<Record>> getAllRecords(UUID userId, UUID categoryId) {
-        if (userId != null && this.userRepository.getById(userId).isEmpty()) {
+        if (userId != null && this.userRepository.findById(userId).isEmpty()) {
             return Optional.empty();
-        } else if (categoryId != null && this.categoryRepository.getById(categoryId).isEmpty()) {
+        } else if (categoryId != null && this.categoryRepository.findById(categoryId).isEmpty()) {
             return Optional.empty();
         }
 
-        return Optional.ofNullable(this.recordRepository.getAll(userId, categoryId));
+        Specification<Record> filter = Specification
+                .where(RecordSpecificationBuilder.hasUser(userId))
+                .and(RecordSpecificationBuilder.hasCategory(categoryId));
+
+        return Optional.of(this.recordRepository.findAll(filter));
     }
 
     public Optional<Record> getRecordById(UUID id) {
-        return this.recordRepository.getById(id);
+        return this.recordRepository.findById(id);
     }
 
     public Optional<Record> createRecord(CreateRecordDTO createRecordDTO) {
-        Optional<User> user = this.userRepository.getById(createRecordDTO.getUserId());
-        Optional<Category> category = this.categoryRepository.getById(createRecordDTO.getCategoryId());
+        Optional<User> user = this.userRepository.findById(createRecordDTO.getUserId());
+        Optional<Category> category = this.categoryRepository.findById(createRecordDTO.getCategoryId());
 
         if (user.isEmpty() || category.isEmpty()) {
             return Optional.empty();
@@ -59,14 +65,19 @@ public class RecordService {
             account.remove(Math.abs(amount));
         }
 
-        return Optional.ofNullable(this.recordRepository.create(
-                createRecordDTO.getUserId(),
-                createRecordDTO.getCategoryId(),
-                createRecordDTO.getAmount()
-        ));
+        Record record = new Record();
+        record.setUser(user.get());
+        record.setCategory(category.get());
+        record.setAmount(amount);
+
+        return Optional.of(this.recordRepository.save(record));
     }
 
     public Optional<Record> deleteRecordById(UUID id) {
-        return this.recordRepository.deleteById(id);
+        Optional<Record> record = this.recordRepository.findById(id);
+
+        this.recordRepository.deleteById(id);
+
+        return record;
     }
 }
