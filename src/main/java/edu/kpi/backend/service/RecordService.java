@@ -44,7 +44,7 @@ public class RecordService {
         }
 
         if (categoryId != null) {
-            filter.and(RecordSpecificationBuilder.hasCategory(categoryId));
+            filter = filter.and(RecordSpecificationBuilder.hasCategory(categoryId));
         }
 
         return Optional.of(this.recordRepository.findAll(filter));
