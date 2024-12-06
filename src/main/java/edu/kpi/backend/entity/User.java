@@ -1,10 +1,9 @@
 package edu.kpi.backend.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -20,9 +19,13 @@ public class User {
     @Column(nullable = false, length = 64)
     private String name;
 
-    @OneToOne
-    @JoinColumn(name = "account_id", nullable = false)
+    @OneToOne( cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "account_id")
     private Account account;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Getter(AccessLevel.NONE)
+    private List<Record> records;
 
     public User(String name, Account account) {
         this.name = name;
