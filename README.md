@@ -34,8 +34,7 @@ The application is built with **Java 17**, **Spring Boot**, **JPA**, and **Postg
       ```
     - Get `.env` file or set up environment variables:
       ```bash
-      export DATABASE_HOST = <db_address>
-      export POSTGRES_DB_NAME = <db_name>
+      export DATABASE_URL = <db_url>
       export POSTGRES_USERNAME = <db_username>
       export POSTGRES_PASSWORD = <db_password>
       ```
@@ -47,13 +46,14 @@ The application is built with **Java 17**, **Spring Boot**, **JPA**, and **Postg
 3. **Environment Variables**:
    Configure database credentials and other settings in the `application.yaml` file or as environment variables:
    ```properties
-   spring.datasource.url=jdbc:postgresql://<db_address>:5432/<db_name>
+   spring.datasource.url=jdbc:<db_url>
    spring.datasource.username=<db_username>
    spring.datasource.password=<db_password>
    ```
 
 4. **Testing**:
     - Use the provided [Postman flow](https://www.postman.com/evanphilips/workspace/my-workspace/flow/674b6ff20f2a8a76568699fa) to test endpoints.
+    - Try to interact with [deploy](https://healthcheck-8g8l.onrender.com) of the application via Render.com hosting.
     - New data structures are included to the output of the old resources' endpoints.
 
 ## 📚 Main Task
