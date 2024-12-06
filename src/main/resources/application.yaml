@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: record-backend
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://${DATABASE_HOST}:5432/${POSTGRES_DB}?currentSchema=public
+    user: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    schemas: public
+    locations: classpath:/db/migration
+    baseline-on-migrate: true
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DATABASE_HOST}:5432/${POSTGRES_DB}?currentSchema=public
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+server:
+  error:
+    include-stacktrace: never
