@@ -13,6 +13,10 @@ java {
     }
 }
 
+springBoot {
+    mainClass.set("edu.kpi.backend.RecordBackendApplication")
+}
+
 repositories {
     mavenCentral()
 }
