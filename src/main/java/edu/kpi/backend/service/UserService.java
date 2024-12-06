@@ -44,10 +44,7 @@ public class UserService {
     public Optional<User> deleteUserById(UUID id) {
         Optional<User> user = this.userRepository.findById(id);
 
-        if (user.isPresent()) {
-            this.accountRepository.deleteById(user.get().getAccount().getId());
-            this.userRepository.deleteById(id);
-        }
+        this.userRepository.deleteById(id);
 
         return user;
     }

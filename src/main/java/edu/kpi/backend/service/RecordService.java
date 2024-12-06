@@ -37,9 +37,15 @@ public class RecordService {
             return Optional.empty();
         }
 
-        Specification<Record> filter = Specification
-                .where(RecordSpecificationBuilder.hasUser(userId))
-                .and(RecordSpecificationBuilder.hasCategory(categoryId));
+        Specification<Record> filter = Specification.where(null);
+
+        if (userId != null) {
+            filter = filter.and(RecordSpecificationBuilder.hasUser(userId));
+        }
+
+        if (categoryId != null) {
+            filter.and(RecordSpecificationBuilder.hasCategory(categoryId));
+        }
 
         return Optional.of(this.recordRepository.findAll(filter));
     }
@@ -59,7 +65,7 @@ public class RecordService {
         int amount = createRecordDTO.getAmount();
         Account account = user.get().getAccount();
 
-        if (createRecordDTO.getAmount() > 0) {
+        if (amount > 0) {
             account.add(amount);
         } else {
             account.remove(Math.abs(amount));

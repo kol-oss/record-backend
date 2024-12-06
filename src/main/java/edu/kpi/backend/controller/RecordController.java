@@ -3,6 +3,7 @@ package edu.kpi.backend.controller;
 import edu.kpi.backend.dto.CreateRecordDTO;
 import edu.kpi.backend.entity.Record;
 import edu.kpi.backend.service.RecordService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +30,13 @@ public class RecordController {
             @RequestParam(required = false, name = "category_id") Optional<UUID> categoryId
     ) {
         if (userId.isEmpty() && categoryId.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id or category id param is required");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User or category id must be specified for get all request");
         }
 
         Optional<List<Record>> filtered = this.recordService.getAllRecords(userId.orElse(null), categoryId.orElse(null));
 
         if (filtered.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Input user id or category id is invalid");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User or category with such id is not found");
         }
 
         return ResponseEntity.ok(filtered.get());
@@ -51,19 +52,11 @@ public class RecordController {
     }
 
     @PostMapping()
-    public ResponseEntity<Record> createRecord(@RequestBody CreateRecordDTO createRecordDTO) {
-        if (
-            createRecordDTO.getUserId() == null ||
-            createRecordDTO.getCategoryId() == null ||
-            createRecordDTO.getAmount() == 0
-        ) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Input params are invalid");
-        }
-
+    public ResponseEntity<Record> createRecord(@Valid @RequestBody CreateRecordDTO createRecordDTO) {
         Optional<Record> created = this.recordService.createRecord(createRecordDTO);
 
         if (created.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User id or category id is invalid");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User or category with such id is not found");
         }
 
         return ResponseEntity.ok(created.get());
