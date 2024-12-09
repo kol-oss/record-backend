@@ -35,6 +35,7 @@ The application is built with **Java 17**, **Spring Boot**, **JPA**, and **Postg
     - Get `.env` file or set up environment variables:
       ```bash
       export DATABASE_URL = <db_url>
+      export POSTGRES_DB_NAME = <db_name>
       export POSTGRES_USERNAME = <db_username>
       export POSTGRES_PASSWORD = <db_password>
       ```
@@ -89,4 +90,4 @@ This implementation introduces an **Income Tracking** feature:
     - Each user has an account entity for income tracking.
     - Income is credited to the account, and expenses are debited from it automatically.
     - Negative balances are **allowed** by default.
-    - Account entity can not be accessed from endpoints directly due to the security issues.
+    - Account entity can not be updated from endpoints directly due to the security issues.
