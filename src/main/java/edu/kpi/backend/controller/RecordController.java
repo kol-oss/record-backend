@@ -4,7 +4,7 @@ import edu.kpi.backend.dto.CreateRecordDTO;
 import edu.kpi.backend.entity.Record;
 import edu.kpi.backend.service.RecordService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +16,9 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/records/")
+@RequiredArgsConstructor
 public class RecordController {
     private final RecordService recordService;
-
-    @Autowired
-    public RecordController(RecordService recordService) {
-        this.recordService = recordService;
-    }
 
     @GetMapping
     public ResponseEntity<List<Record>> getAllRecords(

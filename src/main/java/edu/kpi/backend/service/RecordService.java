@@ -9,7 +9,7 @@ import edu.kpi.backend.repository.CategoryRepository;
 import edu.kpi.backend.repository.RecordRepository;
 import edu.kpi.backend.repository.UserRepository;
 import edu.kpi.backend.service.specifications.RecordSpecificationBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -18,17 +18,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class RecordService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final RecordRepository recordRepository;
-
-    @Autowired
-    public RecordService(UserRepository userRepository, CategoryRepository categoryRepository, RecordRepository recordRepository) {
-        this.userRepository = userRepository;
-        this.categoryRepository = categoryRepository;
-        this.recordRepository = recordRepository;
-    }
 
     public Optional<List<Record>> getAllRecords(UUID userId, UUID categoryId) {
         if (userId != null && this.userRepository.findById(userId).isEmpty()) {

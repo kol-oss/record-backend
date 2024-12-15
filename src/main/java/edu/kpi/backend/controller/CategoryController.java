@@ -4,7 +4,7 @@ import edu.kpi.backend.dto.CreateCategoryDTO;
 import edu.kpi.backend.entity.Category;
 import edu.kpi.backend.service.CategoryService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,13 +14,9 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/categories/")
+@RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
-
-    @Autowired
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
 
     @GetMapping
     public ResponseEntity<List<Category>> getAllCategories() {
