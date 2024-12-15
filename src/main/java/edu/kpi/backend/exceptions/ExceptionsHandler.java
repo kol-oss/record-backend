@@ -34,6 +34,6 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<?> handleResponseStatusException(ResponseStatusException exception) {
-        return new ResponseEntity<>(new ExceptionDetails(exception.getMessage()), exception.getStatusCode());
+        return new ResponseEntity<>(new ExceptionDetails(exception.getReason()), exception.getStatusCode());
     }
 }
