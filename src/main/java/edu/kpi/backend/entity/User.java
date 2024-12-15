@@ -19,6 +19,9 @@ public class User {
     @Column(nullable = false, length = 64)
     private String name;
 
+    @Column(nullable = false)
+    private String password;
+
     @OneToOne( cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "account_id")
     private Account account;
@@ -27,8 +30,9 @@ public class User {
     @Getter(AccessLevel.NONE)
     private List<Record> records;
 
-    public User(String name, Account account) {
+    public User(String name, String password, Account account) {
         this.name = name;
+        this.password = password;
         this.account = account;
     }
 }
