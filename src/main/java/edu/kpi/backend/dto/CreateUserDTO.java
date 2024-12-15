@@ -12,5 +12,9 @@ public class CreateUserDTO {
     @NotNull(message = "User name can not be null")
     @NotEmpty(message = "User name can not be empty")
     @Size(max = 64, message = "User name must be up to 64 symbols")
-    private String name;
+    private String username;
+
+    @NotNull(message = "User password can not be null")
+    @NotEmpty(message = "User password can not be empty")
+    private String password;
 }
