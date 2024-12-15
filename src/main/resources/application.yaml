@@ -3,7 +3,7 @@ spring:
     name: record-backend
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
   flyway:
@@ -21,6 +21,12 @@ spring:
     url: jdbc:${DATABASE_URL}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
+  main:
+    allow-circular-references: true
+
+jwt:
+  secret: ${JWT_SECRET}
+  lifetime: 30m
 
 server:
   error:
